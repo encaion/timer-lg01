@@ -306,7 +306,6 @@ body.blinking .flash { animation: flash 1s linear infinite; }
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.08) 60%, rgba(255, 255, 255, 0.22)),
     var(--glass-soft);
-  border: 1px solid var(--glass-border);
   box-shadow:
     inset 0 1px 0 var(--highlight),
     inset 0 -1px 0 var(--glass-edge),
