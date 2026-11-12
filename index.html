@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>타이머</title>
+  <link rel="icon" id="favicon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <span class="blob blob-violet"></span>
+    <span class="blob blob-mint"></span>
+    <span class="blob blob-peach"></span>
+    <span class="blob blob-sky"></span>
+  </div>
+  <div class="flash" aria-hidden="true"></div>
+
+  <main class="app">
+    <section class="card timer-card" aria-label="타이머">
+      <button type="button" id="settingsToggle" class="icon-btn settings-btn" aria-label="설정" title="설정" aria-expanded="false" aria-controls="settingsPanel">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+
+      <div class="mode-tabs" role="tablist" aria-label="모드">
+        <button type="button" role="tab" class="mode-tab" data-mode="duration" aria-selected="true">시간 지정</button>
+        <button type="button" role="tab" class="mode-tab" data-mode="target" aria-selected="false">종료 시각</button>
+      </div>
+
+      <!-- 남은 시간 + 테두리 눈금 -->
+      <div id="dial" class="dial">
+        <div id="display" class="display">00:00</div>
+        <div id="subInfo" class="sub-info"></div>
+      </div>
+
+      <!-- 시간 지정 모드 -->
+      <div id="durationInputs" class="inputs">
+        <div class="time-fields">
+          <label class="field">
+            <input id="minutesInput" type="number" min="0" max="999" step="1" inputmode="numeric" aria-label="분">
+            <span>분</span>
+          </label>
+          <label class="field">
+            <input id="secondsInput" type="number" min="0" max="59" step="1" inputmode="numeric" aria-label="초">
+            <span>초</span>
+          </label>
+        </div>
+        <div class="quick" aria-label="빠른 설정">
+          <button type="button" class="chip" data-minutes="1">1분</button>
+          <button type="button" class="chip" data-minutes="2">2분</button>
+          <button type="button" class="chip" data-minutes="3">3분</button>
+          <button type="button" class="chip" data-minutes="4">4분</button>
+          <button type="button" class="chip" data-minutes="5">5분</button>
+          <button type="button" class="chip" data-minutes="10">10분</button>
+          <button type="button" class="chip" data-minutes="15">15분</button>
+          <button type="button" class="chip" data-minutes="30">30분</button>
+        </div>
+      </div>
+
+      <!-- 종료 시각 모드 -->
+      <div id="targetInputs" class="inputs" hidden>
+        <div class="time-fields">
+          <span class="field-label">종료 시각</span>
+          <label class="field">
+            <input id="hourInput" type="number" min="0" max="23" step="1" inputmode="numeric" placeholder="--" aria-label="시">
+            <span>시</span>
+          </label>
+          <label class="field">
+            <input id="minuteInput" type="number" min="0" max="59" step="1" inputmode="numeric" placeholder="00" aria-label="분">
+            <span>분</span>
+          </label>
+        </div>
+        <!-- 빠른 설정 버튼 줄과 높이를 맞추는 빈 줄 (모드를 바꿔도 아래 버튼 위치 유지) -->
+        <div class="inputs-spacer" aria-hidden="true"></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="primaryBtn" class="btn btn-primary">시작</button>
+        <button type="button" id="secondaryBtn" class="btn btn-secondary" disabled>초기화</button>
+      </div>
+      <p id="audioHint" class="hint" hidden>소리를 켜려면 화면을 한 번 클릭하세요</p>
+    </section>
+
+    <section id="settingsPanel" class="card settings" aria-label="알림 설정" hidden>
+      <h2>알림 설정</h2>
+
+      <label class="setting-row">
+        <span class="setting-name">소리</span>
+        <input type="checkbox" id="soundToggle" class="switch">
+      </label>
+
+      <div class="setting-row">
+        <span class="setting-name">볼륨</span>
+        <div class="volume">
+          <input type="range" id="volumeInput" min="0" max="100" step="5" aria-label="볼륨">
+          <span id="volumeValue" class="volume-value">70%</span>
+          <button type="button" id="testSoundBtn" class="chip">소리 테스트</button>
+        </div>
+      </div>
+
+      <label class="setting-row">
+        <span class="setting-name">화면 깜빡임</span>
+        <input type="checkbox" id="blinkToggle" class="switch">
+      </label>
+
+      <label class="setting-row">
+        <span class="setting-name">탭 제목 깜빡임</span>
+        <input type="checkbox" id="titleBlinkToggle" class="switch">
+      </label>
+
+      <label class="setting-row">
+        <span class="setting-text">
+          <span class="setting-name">데스크톱 알림</span>
+          <span id="notifyNote" class="setting-note" hidden></span>
+        </span>
+        <input type="checkbox" id="notifyToggle" class="switch">
+      </label>
+    </section>
+  </main>
+
+  <script src="js/storage.js"></script>
+  <script src="js/alarm.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/dial.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
